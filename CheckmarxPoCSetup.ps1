@@ -126,12 +126,10 @@ function DownloadZip {
 }
 
 function InstallCheckmarx(){
-  
-	log "Using Windows Based DB Auth"
-
-	log "Installing base Cx..."
-
-	log "Installing Checkmarx"
+	#TODO log goes into the installer directory
+	
+	log "Installing Checkmarx using Windows Based DB Auth"
+	
 	$CxInstall = "CxSetup.exe /install /quiet ACCEPT_EULA=Y BI=1 ENGINE=1 MANAGER=1 WEB=1 AUDIT=1 INSTALLSHORTCUTS=1 CX_JAVA_HOME='C:\Program Files\Java\jre1.8.0_241'"
 
 	$CxInstallOut = cmd.exe /c $CxInstall 
