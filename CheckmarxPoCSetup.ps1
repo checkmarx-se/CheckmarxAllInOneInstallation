@@ -81,7 +81,7 @@ function InstallDotNet(){
   Set-Location -Path 'third_party\.NET Core - Windows Server Hosting'
 
   $dotNetInstall = "dotnet-hosting-2.1.14-win.exe /install /quiet /norestart"
-  $dotNetInstallOut = cmd.exe /c $cppInstall 2> $1
+  $dotNetInstallOut = cmd.exe /c $dotNetInstall 2> $1
   $dotNetInstallOut
 
   Set-Location -Path $pwd
