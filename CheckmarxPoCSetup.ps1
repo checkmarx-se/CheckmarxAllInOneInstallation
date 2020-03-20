@@ -6,7 +6,7 @@ param (
 )
 
 function log([string]$output) {
-  Add-Content -Path 'checkmarx_install_info.txt' -Value $output
+  Add-Content -Path $global:logfile -Value $output
 }
 
 function GetHardwareInfo() {
@@ -199,6 +199,9 @@ function updateSettingsXml () {
 }
 
 ## main
+
+$global:logfile = Get-Location + '\checkmarx_install_info.txt'
+Write-Host $global:logfile
 
 log "------------------ Beginning of Installation ------------------"
 
