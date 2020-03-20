@@ -64,7 +64,7 @@ function InstallCppRedist(){
   Set-Location -Path 'third_party\C++_Redist'
 
   $cppInstall = "vcredist_x64.exe /passive /norestart"
-  $cppInstallOut = cmd.exe /c $cppInstall 2> $1
+  $cppInstallOut = cmd.exe /c $cppInstall *> $global:logfile
   $cppInstallOut
 
   Set-Location -Path $pwd
@@ -78,8 +78,8 @@ function InstallDotNet(){
   $pwd = Get-Location
   Set-Location -Path 'third_party\.NET Core - Windows Server Hosting'
 
-  $dotNetInstall = "dotnet-hosting-2.1.14-win.exe /install /quiet /norestart"
-  $dotNetInstallOut = cmd.exe /c $dotNetInstall | Out-File -Append -FilePath $global:logfile
+  $dotNetInstall = ".\dotnet-hosting-2.1.14-win.exe /install /quiet /norestart"
+  $dotNetInstallOut = cmd.exe /c $dotNetInstall *> $global:logfile
   $dotNetInstallOut
 
   Set-Location -Path $pwd
@@ -128,9 +128,9 @@ function InstallCheckmarx(){
 	
   log "Installing Checkmarx using Windows Based DB Auth"
 	
-  $CxInstall = "CxSetup.exe /install /quiet ACCEPT_EULA=Y BI=1 ENGINE=1 MANAGER=1 WEB=1 AUDIT=1 INSTALLSHORTCUTS=1 CX_JAVA_HOME='C:\Program Files\Java\jre1.8.0_241'"
+  $CxInstall = 'CxSetup.exe /install /quiet ACCEPT_EULA=Y BI=1 ENGINE=1 MANAGER=1 WEB=1 AUDIT=1 INSTALLSHORTCUTS=1 CX_JAVA_HOME="C:\Program Files\Java\jre1.8.0_241"'
 
-  $CxInstallOut = cmd.exe /c $CxInstall 
+  $CxInstallOut = cmd.exe /c $CxInstall *> $global:logfile
   
   log "...Finished installing base Checkmarx"
 }
