@@ -202,6 +202,10 @@ function updateSettingsXml () {
 
 log "------------------ Beginning of Installation ------------------"
 
+if ( Test-Path -Path 'installer'  ) { Remove-Item 'installer' -Recurse -Force | Out-Null }
+if ( Test-Path -Path 'plugins'  ) { Remove-Item 'plugins' -Recurse -Force | Out-Null }
+if ( Test-Path -Path 'CxSAST_Release_Setup.zip'  ) { Remove-Item 'CxSAST_Release_Setup.zip' -Force | Out-Null }
+
 Write-Host "Get Computer Specs"
 
 GetHardwareInfo
@@ -259,9 +263,6 @@ Write-Host "Installing Checkmarx"
 InstallCheckmarx
 
 Set-Location -Path $pwd 
-
-#TODO: delete installer folder
-#Remove-Item installer -Recurse -force | Out-Null
 
 Write-Host "Setting Environment Variables"
 setEnvVars
