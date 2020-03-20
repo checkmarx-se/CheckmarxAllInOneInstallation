@@ -4,9 +4,9 @@ All In One Installation Script for PoCs
 # List of applications installed
 
 * Chocolatey
-* sql-server-express
-* vcredist140
-* git
+* SQL Server Express
+* IIS
+* GIT
 * dotnetcore-windowshosting
 * jdk8
 * jre8
@@ -18,13 +18,12 @@ All In One Installation Script for PoCs
 * python3
 * sbt
 * 7zip
-* NotepadPlusPlus
+* Notepad++
 * Jenkins
 * Google Chrome
 * Checkmarx Plugins
 * Cpp Redist: vcredist_x64.exe
 * dotnet-hosting-2.1.14-win.exe
-* IIS
 * Checkmarx Manager & Engine Server
 
 # How to Run
