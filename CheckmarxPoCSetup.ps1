@@ -57,6 +57,19 @@ function InstallChocolateyPackages
     }
 }
 
+function UpdateJenkinsServer() {
+  # Set the port Jenkins uses
+  $Config = Get-Content `
+    -Path "${ENV:ProgramFiles(x86)}\Jenkins\Jenkins.xml"
+  $NewConfig = $Config `
+    -replace '--httpPort=[0-9]*\s',"--httpPort=8090 "
+  Set-Content `
+    -Path "${ENV:ProgramFiles(x86)}\Jenkins\Jenkins.xml" `
+    -Value $NewConfig `
+    -Force
+  Restart-Service `
+    -Name Jenkins
+
 function InstallCppRedist(){
   log "Installing CPP Redist..."
 
@@ -234,6 +247,8 @@ InstallChocolateyPackages($packagesList)
 Write-Host "Installing utils (optional but recommended)..."
 $packagesList = "7zip,NotepadPlusPlus,jenkins,GoogleChrome"
 InstallChocolateyPackages($packagesList)
+
+UpdateJenkinsServer
 
 Write-Host "Downloading Checkmarx & Checkmarx Plugins"
 
