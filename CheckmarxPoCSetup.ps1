@@ -155,8 +155,8 @@ function osaHealth() {
   $mavenVersion = mvn -v
   log "$mavenVersion `n"
 
-  #$gradleVersion = gradle -v
-  #log "$gradleVersion `n"
+  $gradleVersion = gradle -v
+  log "$gradleVersion `n"
 
   $dotnetVersion = dotnet --info
   log "$dotnetVersion `n"
