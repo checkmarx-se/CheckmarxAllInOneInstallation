@@ -69,6 +69,7 @@ function UpdateJenkinsServer() {
     -Force
   Restart-Service `
     -Name Jenkins
+}
 
 function InstallCppRedist(){
   log "Installing CPP Redist..."
