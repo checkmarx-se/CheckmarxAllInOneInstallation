@@ -19,7 +19,7 @@ All In One Installation Script for PoCs
 * sbt
 * 7zip
 * Notepad++
-* Jenkins
+* Jenkins (port 8090)
 * Google Chrome
 * Checkmarx Plugins
 * Cpp Redist: vcredist_x64.exe
