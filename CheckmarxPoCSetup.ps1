@@ -178,7 +178,7 @@ function extract () {
 		{
 			Write-Host $zipPass "is not the password."
 			Remove-Item $zipFile | Out-Null
-			exit
+			return
 		} else {
 			log "zip password matches"
 			$zipoutput = 7z.exe x "-p$zipPass" -oinstaller\ $zipFile
