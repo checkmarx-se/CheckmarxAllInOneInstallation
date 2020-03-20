@@ -96,7 +96,7 @@ function InstallDotNet(){
   $dotNetInstallOut = cmd.exe /c $dotNetInstall *>> $global:logfile
   $dotNetInstallOut
 
-  Set-Location -Path $pwd *> $global:logfile
+  Set-Location -Path $pwd *>> $global:logfile
 
   log "...Finished"
 }
@@ -250,7 +250,7 @@ UpdateJenkinsServer
 
 Write-Host "Downloading Checkmarx & Checkmarx Plugins..."
 
-New-Item -ItemType Directory -Force -Path plugins *> $global:logfile
+New-Item -ItemType Directory -Force -Path plugins *>> $global:logfile
 
 DownloadZip "https://download.checkmarx.com/9.0.0/CxSAST.900.Release.Setup-GitMigration_9.0.0.40050.zip" "CxSAST_Release_Setup.zip"
 DownloadZip "https://download.checkmarx.com/9.0.0/Plugins/TeamCity-9.00.1.zip" "plugins\TeamCity-9.00.1.zip"
@@ -268,7 +268,7 @@ extract
 
 $pwd = Get-Location
 
-Set-Location -Path installer *> $global:logfile
+Set-Location -Path installer *>> $global:logfile
 
 Write-Host "Installing Checkmarx prerequisites..."
 InstallCppRedist
