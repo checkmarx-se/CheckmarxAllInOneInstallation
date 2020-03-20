@@ -2,19 +2,19 @@
 # Usage: CheckmarxPoCSetup.ps1 -zipPass xxxxxxxxxxxxxxxxxx
  
 param (
-    [Parameter(Mandatory=$true)][string]$zipPass
+  [Parameter(Mandatory=$true)][string]$zipPass
 )
 
 function log([string]$output) {
-	Add-Content -Path 'checkmarx_install_info.txt' -Value $output
+  Add-Content -Path 'checkmarx_install_info.txt' -Value $output
 }
 
 function GetHardwareInfo() {
-	$output = (systeminfo | Select-String 'Total Physical Memory:').ToString().Split(':')[1].Trim()
-	log "RAM = $output"
+  $output = (systeminfo | Select-String 'Total Physical Memory:').ToString().Split(':')[1].Trim()
+  log "RAM = $output"
 
-	$output = (Get-CimInstance Win32_ComputerSystem).NumberOfLogicalProcessors
-	log "CORES = $output"
+  $output = (Get-CimInstance Win32_ComputerSystem).NumberOfLogicalProcessors
+  log "CORES = $output"
 }
 
 function InstallChocolatey() {
@@ -25,35 +25,35 @@ function InstallChocolatey() {
 
 function InstallChocolateyPackages
 {
-    Param(
-        [ValidateNotNullOrEmpty()][string] $packagesList
-    )
+  Param(
+    [ValidateNotNullOrEmpty()][string] $packagesList
+  )
 
-    $separator = @(",")
-    $splitOption = [System.StringSplitOptions]::RemoveEmptyEntries
-    $packages = $packagesList.Trim().Split($separator, $splitOption)
+  $separator = @(",")
+  $splitOption = [System.StringSplitOptions]::RemoveEmptyEntries
+  $packages = $packagesList.Trim().Split($separator, $splitOption)
 
     if (0 -eq $packages.Count)
     {
-        log 'No packages were specified. Exiting.'
-        return        
+      log 'No packages were specified. Exiting.'
+      return        
     }
 
     foreach ($package in $packages)
     {
-        $package = $package.Trim()
+      $package = $package.Trim()
 
-        log "Installing package: $package ..."
+      log "Installing package: $package ..."
 
-        # using --force will crash some package installs
-        choco install $package --yes --acceptlicense --verbose --allow-empty-checksums | Out-Null  
-        if (-not $?) {
-            $errMsg = "Installation failed for $package : Please see the chocolatey logs in %ALLUSERSPROFILE%\chocolatey\logs folder for details."
-            #throw $errMsg 
-	    	log $errMsg
-        } else {
-	    	log "Installed $package"
-		}      
+      # using --force will crash some package installs
+      choco install $package --yes --acceptlicense --verbose --allow-empty-checksums | Out-Null  
+      if (-not $?) {
+        $errMsg = "Installation failed for $package : Please see the chocolatey logs in %ALLUSERSPROFILE%\chocolatey\logs folder for details."
+        #throw $errMsg 
+	log $errMsg
+      } else {
+        log "Installed $package"
+      }      
     }
 }
 
@@ -91,112 +91,111 @@ function InstallIIS(){
   # Get-WindowsOptionalFeature -Online | where FeatureName -like 'IIS-*'
   log "Installing IIS Components..."  
   if ((Get-WindowsFeature Web-Server).InstallState -ne 'Installed') {
-  	Write-Output "Installing IIS features"
-	Install-WindowsFeature -name Web-Server -IncludeManagementTools
-	Add-WindowsFeature Web-Http-Redirect
+    Write-Output "Installing IIS features"
+    Install-WindowsFeature -name Web-Server -IncludeManagementTools
+    Add-WindowsFeature Web-Http-Redirect
   }
   log "...Finished Installing IIS Components"
 }
 
 function DownloadZip {
-    Param(
-        [string] $url,
-        [string] $zipfile
-    )
+  Param(
+    [string] $url,
+    [string] $zipfile
+  )
 
-    if ($url -and $zipfile) {
-    	log "downloading $url $zipfile"
+  if ($url -and $zipfile) {
+    log "downloading $url $zipfile"
 
-	$file = $(get-location).Path + "\" + $zipfile
+    $file = $(get-location).Path + "\" + $zipfile
 
-	log $file
+    log $file
 
-	#download file
-	try {
-	    $wc = (New-Object System.Net.WebClient).DownloadFile($url, $file)
-	    log "[PASS] Downloaded $zipfile"
-	  	} catch [System.Net.WebException],[System.IO.IOException]{
-	  		log "[ERROR] failed to download $zipfile" 	
+    #download file
+    try {
+      $wc = (New-Object System.Net.WebClient).DownloadFile($url, $file)
+      log "[PASS] Downloaded $zipfile"
+    } catch [System.Net.WebException],[System.IO.IOException]{
+      log "[ERROR] failed to download $zipfile" 	
 	  	}
-	} else {
-		log "invalid parameters"
-	}
+    } else {
+      log "invalid parameters"
+    }
 }
 
 function InstallCheckmarx(){
-	#TODO log goes into the installer directory
+  #TODO log goes into the installer directory
 	
-	log "Installing Checkmarx using Windows Based DB Auth"
+  log "Installing Checkmarx using Windows Based DB Auth"
 	
-	$CxInstall = "CxSetup.exe /install /quiet ACCEPT_EULA=Y BI=1 ENGINE=1 MANAGER=1 WEB=1 AUDIT=1 INSTALLSHORTCUTS=1 CX_JAVA_HOME='C:\Program Files\Java\jre1.8.0_241'"
+  $CxInstall = "CxSetup.exe /install /quiet ACCEPT_EULA=Y BI=1 ENGINE=1 MANAGER=1 WEB=1 AUDIT=1 INSTALLSHORTCUTS=1 CX_JAVA_HOME='C:\Program Files\Java\jre1.8.0_241'"
 
-	$CxInstallOut = cmd.exe /c $CxInstall 
+  $CxInstallOut = cmd.exe /c $CxInstall 
   
-	log "...Finished installing base Checkmarx"
+  log "...Finished installing base Checkmarx"
 }
 
 function osaHealth() {
-	$response = Invoke-WebRequest -METHOD POST -URI https://service-sca.checkmarx.net/health
+  $response = Invoke-WebRequest -METHOD POST -URI https://service-sca.checkmarx.net/health
 
-	log "POST to https://service-sca.checkmarx.net/health: $response"
+  log "POST to https://service-sca.checkmarx.net/health: $response"
 
-	#$mavenVersion = mvn -v
-	#log "$mavenVersion `n"
+  #$mavenVersion = mvn -v
+  #log "$mavenVersion `n"
 
-	#$gradleVersion = gradle -v
-	#log "$gradleVersion `n"
+  #$gradleVersion = gradle -v
+  #log "$gradleVersion `n"
 
-	#$dotnetVersion = dotnet --info
-	#log "$dotnetVersion `n"
+  #$dotnetVersion = dotnet --info
+  #log "$dotnetVersion `n"
 	
-	#$npmVersion = npm -v
-	#log "$npmVersion `n"
+  #$npmVersion = npm -v
+  #log "$npmVersion `n"
 
-	#$pipVersion = pip -V
-	#log "$pipVersion `n"
+  #$pipVersion = pip -V
+  #log "$pipVersion `n"
 }
 
 function setEnvVars() {
+  [System.Environment]::SetEnvironmentVariable("JAVA_HOME", "C:\Program Files\Java\jdk1.8.0_211", [System.EnvironmentVariableTarget]::User)
+  [System.Environment]::SetEnvironmentVariable("MAVEN_HOME", "C:\ProgramData\chocolatey\lib\maven\apache-maven-3.6.3", [System.EnvironmentVariableTarget]::User)
 
-	[System.Environment]::SetEnvironmentVariable("JAVA_HOME", "C:\Program Files\Java\jdk1.8.0_211", [System.EnvironmentVariableTarget]::User)
-	[System.Environment]::SetEnvironmentVariable("MAVEN_HOME", "C:\ProgramData\chocolatey\lib\maven\apache-maven-3.6.3", [System.EnvironmentVariableTarget]::User)
-
-	[Environment]::SetEnvironmentVariable("Path", [Environment]::GetEnvironmentVariable('Path', [EnvironmentVariableTarget]::User) + "$($Env:MAVEN_HOME)\bin", [EnvironmentVariableTarget]::User)
+  [Environment]::SetEnvironmentVariable("Path", [Environment]::GetEnvironmentVariable('Path', [EnvironmentVariableTarget]::User) + "$($Env:MAVEN_HOME)\bin", [EnvironmentVariableTarget]::User)
 }
 
 function extract () {
-	if (-not (test-path "$env:ProgramFiles\7-Zip\7z.exe")) {
-		throw "$env:ProgramFiles\7-Zip\7z.exe needed"
-	} else {
-		log "7Zip found, pass= " + $zipPass
-		$env:Path += ";C:\Program Files\7-Zip\"
+  if (-not (test-path "$env:ProgramFiles\7-Zip\7z.exe")) {
+    throw "$env:ProgramFiles\7-Zip\7z.exe needed"
+  } else {
+    log "7Zip found, pass= " + $zipPass
+    $env:Path += ";C:\Program Files\7-Zip\"
 		
-		$zipFile = "CxSAST_Release_Setup.zip"
+    $zipFile = "CxSAST_Release_Setup.zip"
 		
-		7z.exe "t" $zipFile "-p$zipPass" >$null 2>&1
-		if (-Not $?)
-		{
-			Write-Host $zipPass "is not the password."
-			Remove-Item $zipFile | Out-Null
-			return
-		} else {
-			log "zip password matches"
-			$zipoutput = 7z.exe x "-p$zipPass" -oinstaller\ $zipFile
-			log $zipoutput
+    7z.exe "t" $zipFile "-p$zipPass" >$null 2>&1
+    if (-Not $?)
+      {
+      Write-Host $zipPass "is not the password."
+      Remove-Item $zipFile | Out-Null
+      return
+     } else {
+       log "zip password matches"
+       $zipoutput = 7z.exe x "-p$zipPass" -oinstaller\ $zipFile
+       log $zipoutput
 			
-			Remove-Item $zipFile | Out-Null
-		}
-	}
+       Remove-Item $zipFile | Out-Null
+     }
+   }
 }
 
 function updateSettingsXml () {
-	$filetxt = [IO.File]::ReadAllText("C:\ProgramData\chocolatey\lib\maven\apache-maven-3.6.3\conf\settings.xml")
+  $filetxt = [IO.File]::ReadAllText("C:\ProgramData\chocolatey\lib\maven\apache-maven-3.6.3\conf\settings.xml")
 	
-	$filetxt = ($filetxt -replace "(?ms)^\s+<localRepository>/path/to/local/repo</localRepository>.*?-->", "-->`n<localRepository>C:/M2</localRepository>")
+  $filetxt = ($filetxt -replace "(?ms)^\s+<localRepository>/path/to/local/repo</localRepository>.*?-->", "-->`n<localRepository>C:/M2</localRepository>")
 	
-	Set-Content -Path "C:\ProgramData\chocolatey\lib\maven\apache-maven-3.6.3\conf\settings.xml" -Value $filetxt
+  Set-Content -Path "C:\ProgramData\chocolatey\lib\maven\apache-maven-3.6.3\conf\settings.xml" -Value $filetxt
 	
-	log "Updated settings.xml to have path to C:\m2"
+  log "Updated settings.xml to have path to C:\m2"
 }
 
 ## main
@@ -218,7 +217,7 @@ if (Test-Path "HKLM:\Software\Microsoft\Microsoft SQL Server\Instance Names\SQL"
 	cinst -y sql-server-express --ia "/TCPENABLED=1"
 }
 
-$packagesList = "vcredist140,git"
+$packagesList = "vcredist140,git,dotnetcore-windowshosting"
 InstallChocolateyPackages($packagesList)
 
 Write-Host "Installing JDK8 and package managers..."
@@ -274,9 +273,9 @@ Write-Host "Updating settings.xml file"
 updateSettingsXml
 
 if ([System.IO.File]::Exists("C:\Program Files\Checkmarx\HID\HardwareId.txt")) {
-	$hid = Get-Content -Path "C:\Program Files\Checkmarx\HID\HardwareId.txt"
+    $hid = Get-Content -Path "C:\Program Files\Checkmarx\HID\HardwareId.txt"
 
-	log "HID: $hid"
+    log "HID: $hid"
 }
 Write-Host "HID: $hid"
 
