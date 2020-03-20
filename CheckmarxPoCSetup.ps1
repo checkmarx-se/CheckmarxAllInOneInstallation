@@ -295,6 +295,7 @@ osaHealth
 Write-Host "Updating settings.xml file"
 updateSettingsXml
 
+
 if ([System.IO.File]::Exists("C:\Program Files\Checkmarx\HID\HardwareId.txt")) {
   $hid = Get-Content -Path "C:\Program Files\Checkmarx\HID\HardwareId.txt"
 
