@@ -200,7 +200,7 @@ function updateSettingsXml () {
 
 ## main
 
-$global:logfile = Get-Location + '\checkmarx_install_info.txt'
+$global:logfile = $(get-location).Path + "\checkmarx_install_info.txt"
 Write-Host $global:logfile
 
 log "------------------ Beginning of Installation ------------------"
