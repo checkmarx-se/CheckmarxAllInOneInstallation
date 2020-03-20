@@ -283,18 +283,17 @@ InstallCheckmarx
 
 Set-Location -Path $pwd *>> $global:logfile
 
-Write-Host "Setting Environment Variables"
+Write-Host "Setting Environment Variables..."
 setEnvVars
 
-# refresh environment
+Write-Host "Refreshing Environment Variables..."
 refreshenv
 
-Write-Host "Verifying OSA Health"
+Write-Host "Verifying OSA Health..."
 osaHealth
 
-Write-Host "Updating settings.xml file"
+Write-Host "Updating settings.xml file..."
 updateSettingsXml
-
 
 if ([System.IO.File]::Exists("C:\Program Files\Checkmarx\HID\HardwareId.txt")) {
   $hid = Get-Content -Path "C:\Program Files\Checkmarx\HID\HardwareId.txt"
