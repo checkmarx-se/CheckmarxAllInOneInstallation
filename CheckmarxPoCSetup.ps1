@@ -18,7 +18,7 @@ function GetHardwareInfo() {
 }
 
 function InstallChocolatey() {
-  Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')) >$null 2>&1
+  Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')) *>$null
 
   log("Installed Chocolatey")
 }
