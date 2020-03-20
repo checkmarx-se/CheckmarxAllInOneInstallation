@@ -307,6 +307,7 @@ if ([System.IO.File]::Exists("C:\Program Files\Checkmarx\HID\HardwareId.txt")) {
     Write-Host "`nEmail $global:logfile to Checkmarx to receive a license`n"
   } else {
     Write-Host "Installation did not complete.  Email $global:logfile to Checkmarx for further debug information"
+  }
 }
 
 log "------------------ End of Installation ------------------"
