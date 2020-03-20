@@ -93,7 +93,7 @@ function InstallDotNet(){
   Set-Location -Path 'third_party\.NET Core - Windows Server Hosting'
 
   $dotNetInstall = ".\dotnet-hosting-2.1.14-win.exe /install /quiet /norestart"
-  $dotNetInstallOut = cmd.exe /c $dotNetInstall *> $global:logfile
+  $dotNetInstallOut = cmd.exe /c $dotNetInstall *>> $global:logfile
   $dotNetInstallOut
 
   Set-Location -Path $pwd
@@ -144,7 +144,7 @@ function InstallCheckmarx(){
 	
   $CxInstall = 'CxSetup.exe /install /quiet ACCEPT_EULA=Y BI=1 ENGINE=1 MANAGER=1 WEB=1 AUDIT=1 INSTALLSHORTCUTS=1 CX_JAVA_HOME="C:\Program Files\Java\jre1.8.0_241"'
 
-  $CxInstallOut = cmd.exe /c $CxInstall *> $global:logfile
+  $CxInstallOut = cmd.exe /c $CxInstall *>> $global:logfile
   
   log "...Finished installing base Checkmarx"
 }
