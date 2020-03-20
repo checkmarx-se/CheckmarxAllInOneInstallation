@@ -117,10 +117,10 @@ function DownloadZip {
       log "[PASS] Downloaded $zipfile"
     } catch [System.Net.WebException],[System.IO.IOException]{
       log "[ERROR] failed to download $zipfile" 	
-	  	}
-    } else {
-      log "invalid parameters"
     }
+  } else {
+    log "invalid parameters"
+  }
 }
 
 function InstallCheckmarx(){
@@ -167,7 +167,7 @@ function extract () {
   if (-not (test-path "$env:ProgramFiles\7-Zip\7z.exe")) {
     throw "$env:ProgramFiles\7-Zip\7z.exe needed"
   } else {
-    log "7Zip found, pass= " + $zipPass
+    log "7Zip found, pass= $zipPass"
     $env:Path += ";C:\Program Files\7-Zip\"
 		
     $zipFile = "CxSAST_Release_Setup.zip"
@@ -212,9 +212,9 @@ Write-Host "Installing CxServer prerequisites..."
 
 #TODO: install SSMS? mssqlserver2012express,mssqlservermanagementstudio2014express
 if (Test-Path "HKLM:\Software\Microsoft\Microsoft SQL Server\Instance Names\SQL") {
-	log "SQL already installed"
+  log "SQL already installed"
 } else {
-	cinst -y sql-server-express --ia "/TCPENABLED=1"
+  cinst -y sql-server-express --ia "/TCPENABLED=1"
 }
 
 $packagesList = "vcredist140,git,dotnetcore-windowshosting"
@@ -273,9 +273,9 @@ Write-Host "Updating settings.xml file"
 updateSettingsXml
 
 if ([System.IO.File]::Exists("C:\Program Files\Checkmarx\HID\HardwareId.txt")) {
-    $hid = Get-Content -Path "C:\Program Files\Checkmarx\HID\HardwareId.txt"
+  $hid = Get-Content -Path "C:\Program Files\Checkmarx\HID\HardwareId.txt"
 
-    log "HID: $hid"
+  log "HID: $hid"
 }
 Write-Host "HID: $hid"
 
