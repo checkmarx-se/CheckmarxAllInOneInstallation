@@ -77,7 +77,7 @@ function InstallCppRedist(){
   $pwd = Get-Location
   Set-Location -Path 'third_party\C++_Redist' *>> $global:logfile
 
-  $cppInstall = "vcredist_x64.exe /passive /norestart"
+  $cppInstall = ".\vcredist_x64.exe /passive /norestart"
   $cppInstallOut = cmd.exe /c $cppInstall *>> $global:logfile
   $cppInstallOut
 
@@ -235,7 +235,7 @@ Write-Host "Installing CxServer prerequisites..."
 if (Test-Path "HKLM:\Software\Microsoft\Microsoft SQL Server\Instance Names\SQL") {
   log "SQL already installed"
 } else {
-  cinst -y sql-server-express --ia "/TCPENABLED=1"
+  cinst -y sql-server-express --ia "/TCPENABLED=1" | Out-Null 
 }
 
 $packagesList = "vcredist140,git,dotnetcore-windowshosting"
@@ -286,6 +286,9 @@ Set-Location -Path $pwd *>> $global:logfile
 Write-Host "Setting Environment Variables"
 setEnvVars
 
+# refresh environment
+refreshenv
+
 Write-Host "Verifying OSA Health"
 osaHealth
 
@@ -296,11 +299,14 @@ if ([System.IO.File]::Exists("C:\Program Files\Checkmarx\HID\HardwareId.txt")) {
   $hid = Get-Content -Path "C:\Program Files\Checkmarx\HID\HardwareId.txt"
 
   log "HID: $hid"
+  Write-Host "HID: $hid"
+
+  if ($hid) { 
+    Write-Host "Done installing"
+
+    Write-Host "`nEmail $global:logfile to Checkmarx to receive a license`n"
+  } else {
+    Write-Host "Installation did not complete.  Email $global:logfile to Checkmarx for further debug information"
 }
-Write-Host "HID: $hid"
-
-Write-Host "Done installing"
-
-Write-Host "`nEmail checkmarx_install_info.txt to Checkmarx to receive a license`n"
 
 log "------------------ End of Installation ------------------"
