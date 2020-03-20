@@ -158,14 +158,17 @@ function osaHealth() {
   #$gradleVersion = gradle -v
   #log "$gradleVersion `n"
 
-  #$dotnetVersion = dotnet --info
-  #log "$dotnetVersion `n"
+  $dotnetVersion = dotnet --info
+  log "$dotnetVersion `n"
 	
-  #$npmVersion = npm -v
-  #log "$npmVersion `n"
+  $npmVersion = npm -v
+  log "$npmVersion `n"
 
-  #$pipVersion = pip -V
-  #log "$pipVersion `n"
+  $pipVersion = pip -V
+  log "$pipVersion `n"
+  
+  $sbtVersion = sbt about
+  log "$sbtVersion `n"
 }
 
 function setEnvVars() {
