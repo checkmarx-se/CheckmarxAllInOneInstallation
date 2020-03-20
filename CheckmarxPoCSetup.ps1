@@ -90,7 +90,7 @@ function InstallDotNet(){
   log "Installing DotNet..."
   
   $pwd = Get-Location
-  Set-Location -Path 'third_party\.NET Core - Windows Server Hosting' *> $global:logfile
+  Set-Location -Path 'third_party\.NET Core - Windows Server Hosting' *>> $global:logfile
 
   $dotNetInstall = ".\dotnet-hosting-2.1.14-win.exe /install /quiet /norestart"
   $dotNetInstallOut = cmd.exe /c $dotNetInstall *>> $global:logfile
@@ -152,8 +152,8 @@ function osaHealth() {
 
   log "POST to https://service-sca.checkmarx.net/health: $response"
 
-  #$mavenVersion = mvn -v
-  #log "$mavenVersion `n"
+  $mavenVersion = mvn -v
+  log "$mavenVersion `n"
 
   #$gradleVersion = gradle -v
   #log "$gradleVersion `n"
