@@ -257,14 +257,14 @@ New-Item -ItemType Directory -Force -Path plugins *>> $global:logfile
 
 DownloadZip "https://download.checkmarx.com/9.0.0/CxSAST.900.Release.Setup-GitMigration_9.0.0.40050.zip" "CxSAST_Release_Setup.zip"
 DownloadZip "https://download.checkmarx.com/9.0.0/Plugins/TeamCity-9.00.1.zip" "plugins\TeamCity-9.00.1.zip"
-DownloadZip "https://download.checkmarx.com/9.0.0/Plugins/CxViewer-IntelliJ-9.00.0.zip" "plugins\CxViewer-IntelliJ-9.00.0.zip"
+DownloadZip "https://download.checkmarx.com/9.0.0/Plugins/CxViewer-IntelliJ-9.00.1.zip" "plugins\CxViewer-IntelliJ-9.00.1.zip"
 DownloadZip "https://download.checkmarx.com/9.0.0/Plugins/Jenkins_9.00.1.zip" "plugins\Jenkins_9.00.1.zip"
 DownloadZip "https://download.checkmarx.com/9.0.0/Plugins/Bamboo-9.0.1.zip" "plugins\Bamboo-9.0.1.zip"
 DownloadZip "https://download.checkmarx.com/9.0.0/Plugins/CxConsolePlugin-9.00.2.zip" "plugins\CxConsolePlugin-9.00.2.zip"
 DownloadZip "https://download.checkmarx.com/9.0.0/Plugins/Sonar-9.00.1.zip" "plugins\Sonar-9.00.1.zip"
-DownloadZip "https://download.checkmarx.com/9.0.0/Plugins/VSTS-TFS-9.00.0.plugin.zip" "plugins\VSTS-TFS-9.00.0.plugin.zip"
 DownloadZip "https://download.checkmarx.com/9.0.0/Plugins/Maven-9.00.1.zip" "plugins\Maven-9.00.1.zip"
-DownloadZip "https://download.checkmarx.com/9.0.0/Plugins/CxViewerVSIX-9.0.0.zip" "plugins\CxViewerVSIX-9.0.0.zip"
+DownloadZip "https://download.checkmarx.com/9.0.0/Plugins/CxViewerVSIX-9.00.2.zip" "plugins\CxViewerVSIX-9.0.2.zip"
+DownloadZip "https://download.checkmarx.com/9.0.0/Plugins/CxEclipsePlugin-90.0.1.zip" "plugins\CxEclipsePlugin-90.0.1.zip"
 
 Write-Host "Extracting Checkmarx Installer..."
 extract
