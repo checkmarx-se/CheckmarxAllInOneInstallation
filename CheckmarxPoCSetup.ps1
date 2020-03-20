@@ -153,22 +153,22 @@ function osaHealth() {
   log "POST to https://service-sca.checkmarx.net/health: $response"
 
   $mavenVersion = mvn -v
-  log "$mavenVersion `n"
+  log "[MAVEN] $mavenVersion `n"
 
   $gradleVersion = gradle -v
-  log "$gradleVersion `n"
+  log "[GRADLE] $gradleVersion `n"
 
   $dotnetVersion = dotnet --info
-  log "$dotnetVersion `n"
+  log "[DOTNET] $dotnetVersion `n"
 	
   $npmVersion = npm -v
-  log "$npmVersion `n"
+  log "[NPM] $npmVersion `n"
 
   $pipVersion = pip -V
-  log "$pipVersion `n"
+  log "[PIP] $pipVersion `n"
   
-  $sbtVersion = sbt about
-  log "$sbtVersion `n"
+  $sbtVersion = sbt --version
+  log "[SBT] $sbtVersion `n"
 }
 
 function setEnvVars() {
