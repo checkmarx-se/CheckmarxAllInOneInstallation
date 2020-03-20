@@ -10,7 +10,6 @@ function log([string]$output) {
 }
 
 function GetHardwareInfo() {
-	
 	$output = (systeminfo | Select-String 'Total Physical Memory:').ToString().Split(':')[1].Trim()
 	log "RAM = $output"
 
@@ -19,7 +18,6 @@ function GetHardwareInfo() {
 }
 
 function InstallChocolatey() {
-
   Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')) >$null 2>&1
 
   log("Installed Chocolatey")
@@ -52,9 +50,9 @@ function InstallChocolateyPackages
         if (-not $?) {
             $errMsg = "Installation failed for $package : Please see the chocolatey logs in %ALLUSERSPROFILE%\chocolatey\logs folder for details."
             #throw $errMsg 
-			log $errMsg
+	    	log $errMsg
         } else {
-			log "Installed $package"
+	    	log "Installed $package"
 		}      
     }
 }
@@ -93,9 +91,9 @@ function InstallIIS(){
   # Get-WindowsOptionalFeature -Online | where FeatureName -like 'IIS-*'
   log "Installing IIS Components..."  
   if ((Get-WindowsFeature Web-Server).InstallState -ne 'Installed') {
-    Write-Output "Installing IIS features"
-    Install-WindowsFeature -name Web-Server -IncludeManagementTools
-    Add-WindowsFeature Web-Http-Redirect
+  	Write-Output "Installing IIS features"
+	Install-WindowsFeature -name Web-Server -IncludeManagementTools
+	Add-WindowsFeature Web-Http-Redirect
   }
   log "...Finished Installing IIS Components"
 }
@@ -107,16 +105,16 @@ function DownloadZip {
     )
 
     if ($url -and $zipfile) {
-	    log "downloading $url $zipfile"
+    	log "downloading $url $zipfile"
 
-	    $file = $(get-location).Path + "\" + $zipfile
+	$file = $(get-location).Path + "\" + $zipfile
 
-	    log $file
+	log $file
 
-	  	#download file
-	  	try {
-	  		$wc = (New-Object System.Net.WebClient).DownloadFile($url, $file)
-	  		log "[PASS] Downloaded $zipfile"
+	#download file
+	try {
+	    $wc = (New-Object System.Net.WebClient).DownloadFile($url, $file)
+	    log "[PASS] Downloaded $zipfile"
 	  	} catch [System.Net.WebException],[System.IO.IOException]{
 	  		log "[ERROR] failed to download $zipfile" 	
 	  	}
@@ -170,7 +168,7 @@ function extract () {
 	if (-not (test-path "$env:ProgramFiles\7-Zip\7z.exe")) {
 		throw "$env:ProgramFiles\7-Zip\7z.exe needed"
 	} else {
-		log "7Zip found"
+		log "7Zip found, pass= " + $zipPass
 		$env:Path += ";C:\Program Files\7-Zip\"
 		
 		$zipFile = "CxSAST_Release_Setup.zip"
@@ -192,7 +190,6 @@ function extract () {
 }
 
 function updateSettingsXml () {
-	
 	$filetxt = [IO.File]::ReadAllText("C:\ProgramData\chocolatey\lib\maven\apache-maven-3.6.3\conf\settings.xml")
 	
 	$filetxt = ($filetxt -replace "(?ms)^\s+<localRepository>/path/to/local/repo</localRepository>.*?-->", "-->`n<localRepository>C:/M2</localRepository>")
