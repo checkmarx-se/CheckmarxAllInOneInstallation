@@ -30,6 +30,7 @@ All In One Installation Script for PoCs
 Run PowerShell in Admin Mode:
 
 ```
+PS > New-Item c:\CheckmarxInstall -ItemType directory -Force; Set-Location -Path C:\CheckmarxInstall
 PS > curl -o CheckmarxPoCSetup.ps1  https://raw.githubusercontent.com/jbrotsos/CheckmarxAllInOneInstallation/master/CheckmarxPoCSetup.ps1
 PS > .\CheckmarxPoCSetup.ps1 -zipPass xxxxxxx
 ```
