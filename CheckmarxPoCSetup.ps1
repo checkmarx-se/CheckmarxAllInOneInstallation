@@ -75,13 +75,13 @@ function InstallCppRedist(){
   log "Installing CPP Redist..."
 
   $pwd = Get-Location
-  Set-Location -Path 'third_party\C++_Redist'
+  Set-Location -Path 'third_party\C++_Redist' *>> $global:logfile
 
   $cppInstall = "vcredist_x64.exe /passive /norestart"
-  $cppInstallOut = cmd.exe /c $cppInstall *> $global:logfile
+  $cppInstallOut = cmd.exe /c $cppInstall *>> $global:logfile
   $cppInstallOut
 
-  Set-Location -Path $pwd
+  Set-Location -Path $pwd *>> $global:logfile
 
   log "...Finished"
 }
@@ -90,13 +90,13 @@ function InstallDotNet(){
   log "Installing DotNet..."
   
   $pwd = Get-Location
-  Set-Location -Path 'third_party\.NET Core - Windows Server Hosting'
+  Set-Location -Path 'third_party\.NET Core - Windows Server Hosting' *> $global:logfile
 
   $dotNetInstall = ".\dotnet-hosting-2.1.14-win.exe /install /quiet /norestart"
   $dotNetInstallOut = cmd.exe /c $dotNetInstall *>> $global:logfile
   $dotNetInstallOut
 
-  Set-Location -Path $pwd
+  Set-Location -Path $pwd *> $global:logfile
 
   log "...Finished"
 }
@@ -137,9 +137,7 @@ function DownloadZip {
   }
 }
 
-function InstallCheckmarx(){
-  #TODO log goes into the installer directory
-	
+function InstallCheckmarx(){	
   log "Installing Checkmarx using Windows Based DB Auth"
 	
   $CxInstall = 'CxSetup.exe /install /quiet ACCEPT_EULA=Y BI=1 ENGINE=1 MANAGER=1 WEB=1 AUDIT=1 INSTALLSHORTCUTS=1 CX_JAVA_HOME="C:\Program Files\Java\jre1.8.0_241"'
@@ -190,14 +188,14 @@ function extract () {
     if (-Not $?)
       {
       Write-Host $zipPass "is not the password."
-      Remove-Item $zipFile | Out-Null
+      Remove-Item $zipFile *>> $global:logfile
       return
      } else {
        log "zip password matches"
        $zipoutput = 7z.exe x "-p$zipPass" -oinstaller\ $zipFile
        log $zipoutput
 			
-       Remove-Item $zipFile | Out-Null
+       Remove-Item $zipFile *>> $global:logfile
      }
    }
 }
@@ -215,7 +213,6 @@ function updateSettingsXml () {
 ## main
 
 $global:logfile = $(get-location).Path + "\checkmarx_install_info.txt"
-Write-Host $global:logfile
 
 log "------------------ Beginning of Installation ------------------"
 
@@ -251,9 +248,9 @@ InstallChocolateyPackages($packagesList)
 
 UpdateJenkinsServer
 
-Write-Host "Downloading Checkmarx & Checkmarx Plugins"
+Write-Host "Downloading Checkmarx & Checkmarx Plugins..."
 
-New-Item -ItemType Directory -Force -Path plugins | Out-Null
+New-Item -ItemType Directory -Force -Path plugins *> $global:logfile
 
 DownloadZip "https://download.checkmarx.com/9.0.0/CxSAST.900.Release.Setup-GitMigration_9.0.0.40050.zip" "CxSAST_Release_Setup.zip"
 DownloadZip "https://download.checkmarx.com/9.0.0/Plugins/TeamCity-9.00.1.zip" "plugins\TeamCity-9.00.1.zip"
@@ -266,14 +263,14 @@ DownloadZip "https://download.checkmarx.com/9.0.0/Plugins/VSTS-TFS-9.00.0.plugin
 DownloadZip "https://download.checkmarx.com/9.0.0/Plugins/Maven-9.00.1.zip" "plugins\Maven-9.00.1.zip"
 DownloadZip "https://download.checkmarx.com/9.0.0/Plugins/CxViewerVSIX-9.0.0.zip" "plugins\CxViewerVSIX-9.0.0.zip"
 
-Write-Host "Extracting Checkmarx Installer"
+Write-Host "Extracting Checkmarx Installer..."
 extract
 
 $pwd = Get-Location
 
-Set-Location -Path installer 
+Set-Location -Path installer *> $global:logfile
 
-Write-Host "Installing Checkmarx prerequisites"
+Write-Host "Installing Checkmarx prerequisites..."
 InstallCppRedist
 InstallDotNet
 InstallIIS
@@ -281,7 +278,7 @@ InstallIIS
 Write-Host "Installing Checkmarx"
 InstallCheckmarx
 
-Set-Location -Path $pwd 
+Set-Location -Path $pwd *>> $global:logfile
 
 Write-Host "Setting Environment Variables"
 setEnvVars
