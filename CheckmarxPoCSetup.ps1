@@ -105,7 +105,7 @@ function InstallIIS(){
   # Get-WindowsOptionalFeature -Online | where FeatureName -like 'IIS-*'
   log "Installing IIS Components..."  
   if ((Get-WindowsFeature Web-Server).InstallState -ne 'Installed') {
-    Write-Output "Installing IIS features"
+    Write-Output "Installing IIS features..."
     Install-WindowsFeature -name Web-Server -IncludeManagementTools
     Add-WindowsFeature Web-Http-Redirect
   }
@@ -278,7 +278,7 @@ InstallCppRedist
 InstallDotNet
 InstallIIS
 
-Write-Host "Installing Checkmarx"
+Write-Host "Installing Checkmarx..."
 InstallCheckmarx
 
 Set-Location -Path $pwd *>> $global:logfile
