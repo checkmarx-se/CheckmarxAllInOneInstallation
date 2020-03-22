@@ -140,7 +140,7 @@ function DownloadZip {
 function InstallCheckmarx(){	
   log "Installing Checkmarx using Windows Based DB Auth"
 	
-  $CxInstall = 'CxSetup.exe /install /quiet ACCEPT_EULA=Y BI=1 ENGINE=1 MANAGER=1 WEB=1 AUDIT=1 INSTALLSHORTCUTS=1 CX_JAVA_HOME="C:\Program Files\Java\jre1.8.0_241"'
+  $CxInstall = 'CxSetup.exe /install /quiet ACCEPT_EULA=Y SQLAUTH=1 BI=1 ENGINE=1 MANAGER=1 WEB=1 AUDIT=1 INSTALLSHORTCUTS=1 CX_JAVA_HOME="C:\Program Files\Java\jre1.8.0_241"'
 
   $CxInstallOut = cmd.exe /c $CxInstall *>> $global:logfile
   
@@ -231,7 +231,6 @@ InstallChocolatey
 
 Write-Host "Installing CxServer prerequisites..."
 
-#TODO: install SSMS? mssqlserver2012express,mssqlservermanagementstudio2014express
 if (Test-Path "HKLM:\Software\Microsoft\Microsoft SQL Server\Instance Names\SQL") {
   log "SQL already installed"
 } else {
@@ -246,7 +245,7 @@ $packagesList = "jdk8,jre8,maven,nodejs-lts,dotnetcore-sdk,nuget.commandline,gra
 InstallChocolateyPackages($packagesList)
 
 Write-Host "Installing utils (optional but recommended)..."
-$packagesList = "7zip,NotepadPlusPlus,jenkins,GoogleChrome"
+$packagesList = "7zip,NotepadPlusPlus,jenkins,GoogleChrome,ssms"
 InstallChocolateyPackages($packagesList)
 
 UpdateJenkinsServer
