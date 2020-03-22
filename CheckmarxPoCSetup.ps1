@@ -140,7 +140,7 @@ function DownloadZip {
 function InstallCheckmarx(){	
   log "Installing Checkmarx using Windows Based DB Auth"
 	
-  $CxInstall = 'CxSetup.exe /install /quiet ACCEPT_EULA=Y SQLAUTH=0 BI=1 ENGINE=1 MANAGER=1 WEB=1 AUDIT=1 INSTALLSHORTCUTS=1 CX_JAVA_HOME="C:\Program Files\Java\jre1.8.0_241"'
+  $CxInstall = 'CxSetup.exe /install /quiet ACCEPT_EULA=Y SQLAUTH=1 BI=1 ENGINE=1 MANAGER=1 WEB=1 AUDIT=1 INSTALLSHORTCUTS=1 CX_JAVA_HOME="C:\Program Files\Java\jre1.8.0_241"'
 
   $CxInstallOut = cmd.exe /c $CxInstall *>> $global:logfile
   
