@@ -254,7 +254,7 @@ Write-Host "Downloading Checkmarx & Checkmarx Plugins..."
 
 New-Item -ItemType Directory -Force -Path plugins *>> $global:logfile
 
-DownloadZip "https://download.checkmarx.com/9.0.0/CxSAST.900.Release.Setup-GitMigration_9.0.0.40050.zip" "CxSAST_Release_Setup.zip"
+DownloadZip "https://download.checkmarx.com/9.0.0/CxSAST.900.Release.Setup-GitMigration_9.0.0.40085.zip" "CxSAST_Release_Setup.zip"
 DownloadZip "https://download.checkmarx.com/9.0.0/Plugins/TeamCity-9.00.1.zip" "plugins\TeamCity-9.00.1.zip"
 DownloadZip "https://download.checkmarx.com/9.0.0/Plugins/CxViewer-IntelliJ-9.00.1.zip" "plugins\CxViewer-IntelliJ-9.00.1.zip"
 DownloadZip "https://download.checkmarx.com/9.0.0/Plugins/Jenkins_9.00.1.zip" "plugins\Jenkins_9.00.1.zip"
